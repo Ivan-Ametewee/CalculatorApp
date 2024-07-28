@@ -1,30 +1,52 @@
-// This is a basic Flutter widget test.
-//
-// To perform an interaction with a widget in your test, use the WidgetTester
-// utility in the flutter_test package. For example, you can send tap and scroll
-// gestures. You can also use WidgetTester to find child widgets in the widget
-// tree, read text, and verify that the values of widget properties are correct.
-
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-
-import 'package:my_calculator/main.dart';
+import 'package:Calculator/main.dart'; // Replace with your actual import path
 
 void main() {
-  testWidgets('Counter increments smoke test', (WidgetTester tester) async {
+  testWidgets('Calculator app test', (WidgetTester tester) async {
     // Build our app and trigger a frame.
-    await tester.pumpWidget(const MaterialApp());
+    await tester.pumpWidget(const MyApp());
 
-    // Verify that our counter starts at 0.
-    expect(find.text('0'), findsOneWidget);
-    expect(find.text('1'), findsNothing);
+    // Verify that our app starts with an empty display.
+    expect(find.text(''), findsOneWidget);
+    //expect(find.text('1'), findsNothing);
 
-    // Tap the '+' icon and trigger a frame.
-    await tester.tap(find.byIcon(Icons.add));
+    // Tap the '1' button and verify that the displayedText is updated.
+    await tester.tap(find.text('1'));
     await tester.pump();
 
-    // Verify that our counter has incremented.
-    expect(find.text('0'), findsNothing);
     expect(find.text('1'), findsOneWidget);
+    expect(find.text('0'), findsNothing);
+
+    // Tap the '0' button and verify that the displayedText is updated.
+    await tester.tap(find.text('0'));
+    await tester.pump();
+
+    expect(find.text('10'), findsOneWidget);
+    expect(find.text('1'), findsNothing);
+
+    // Tap the '+' button and verify that the displayedText is updated.
+    await tester.tap(find.text('+'));
+    await tester.pump();
+
+    expect(find.text('10+'), findsOneWidget);
+
+    // Tap the '2' button and verify that the displayedText is updated.
+    await tester.tap(find.text('2'));
+    await tester.pump();
+
+    expect(find.text('10+2'), findsOneWidget);
+
+    // Tap the '=' button and verify that the displayedText is updated with the result.
+    await tester.tap(find.text('='));
+    await tester.pump();
+
+    expect(find.text('12'), findsOneWidget);
+
+    // Tap the 'x' icon to clear the display
+    await tester.tap(find.byIcon(Icons.cancel));
+    await tester.pump();
+
+    expect(find.text(''), findsOneWidget);
   });
 }
